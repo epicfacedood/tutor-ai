@@ -7,7 +7,9 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "setup-env": "node scripts/setup-env.js",
+    "reset-env": "node scripts/reset-env.js"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.39.0",

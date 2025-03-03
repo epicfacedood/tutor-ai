@@ -111,6 +111,56 @@ The application uses the following environment variables:
 
 - `VITE_CLAUDE_API_KEY`: Your Claude API key for AI responses
 
+### Environment Variables Security
+
+To securely manage environment variables:
+
+1. **Never commit real API keys to version control**
+
+   - The `.env` file is included in `.gitignore` to prevent accidental commits
+   - Use `.env.example` as a template with placeholder values
+
+2. **Setting up environment variables**
+
+   Run the setup script to create your `.env` file:
+
+   ```bash
+   npm run setup-env
+   ```
+
+   This script will:
+
+   - Check if `.env` exists
+   - Create it from `.env.example` if needed
+   - Prompt you to enter your API key
+   - Verify that `.env` is in your `.gitignore`
+
+3. **Manual setup**
+
+   Alternatively, you can manually copy `.env.example` to `.env` and add your API key:
+
+   ```bash
+   cp .env.example .env
+   ```
+
+   Then edit the `.env` file to add your actual API key.
+
+4. **Security best practices**
+
+   - Rotate your API keys regularly
+   - Use different API keys for development and production
+   - Consider using a secrets management service for production deployments
+
+5. **Before committing changes**
+
+   To ensure you don't accidentally commit your API key, run:
+
+   ```bash
+   npm run reset-env
+   ```
+
+   This will replace your actual API key with a placeholder in the `.env` file.
+
 ## License
 
 MIT
