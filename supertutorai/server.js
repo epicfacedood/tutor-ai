@@ -4,9 +4,19 @@ import fetch from "node-fetch";
 import multer from "multer";
 import fs from "fs";
 import path from "path";
+import { fileURLToPath } from "url";
+import dotenv from "dotenv";
+import vectorDbRoutes from "./server/vectordb/routes.js";
+
+// Load environment variables
+dotenv.config();
 
 const app = express();
 const port = 3002;
+
+// Get the directory name
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 // Configure multer for handling file uploads
 const storage = multer.memoryStorage();
@@ -435,11 +445,17 @@ IMPORTANT: Always respond to the user's question directly. Never respond with a 
   }
 });
 
+// Vector database routes
+app.use("/api/vectordb", vectorDbRoutes);
+
 // Start the server with error handling
 app
   .listen(port, () => {
     console.log(`Proxy server running at http://localhost:${port}`);
     console.log(`Test endpoint available at http://localhost:${port}/test`);
+    console.log(
+      `Vector DB API available at http://localhost:${port}/api/vectordb`
+    );
   })
   .on("error", (err) => {
     if (err.code === "EADDRINUSE") {

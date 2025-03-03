@@ -9,7 +9,9 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "setup-env": "node scripts/setup-env.js",
-    "reset-env": "node scripts/reset-env.js"
+    "reset-env": "node scripts/reset-env.js",
+    "server": "node server.js",
+    "dev:all": "concurrently \"npm run dev\" \"npm run server\""
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.39.0",
@@ -18,6 +20,8 @@
     "@tailwindcss/vite": "^4.0.9",
     "@types/katex": "^0.16.7",
     "axios": "^1.8.1",
+    "chromadb": "^1.10.4",
+    "concurrently": "^8.2.2",
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",
     "dotenv-expand": "^12.0.1",
@@ -28,13 +32,15 @@
     "pdfjs-dist": "^3.11.174",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "react-katex": "^3.0.1"
+    "react-katex": "^3.0.1",
+    "uuid": "^9.0.1"
   },
   "devDependencies": {
     "@eslint/js": "^9.21.0",
     "@types/pdfjs-dist": "^2.10.377",
     "@types/react": "^19.0.10",
     "@types/react-dom": "^19.0.4",
+    "@types/uuid": "^9.0.8",
     "@vitejs/plugin-react": "^4.3.4",
     "autoprefixer": "^10.4.20",
     "eslint": "^9.21.0",

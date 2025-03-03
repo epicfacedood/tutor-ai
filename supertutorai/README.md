@@ -1,165 +1,107 @@
 # SuperTutorAI
 
-A ChatGPT-like interface built with React and Vite, powered by Claude AI.
+An AI-powered tutoring application for mathematics.
 
 ## Features
 
-- Modern UI similar to ChatGPT
-- Real-time chat interface with Claude AI integration
-- Chat history with multiple conversations
-- Responsive design
-- Dark mode sidebar
+- Chat with an AI tutor to get help with math problems
+- Upload and process math papers and solutions
+- Vector database for storing and retrieving similar math problems and documents
+- Image processing for analyzing math questions from images
 
-## Tech Stack
-
-- React
-- TypeScript
-- Vite
-- TailwindCSS
-- Anthropic Claude API
-- Heroicons
-
-## Getting Started
+## Setup
 
 ### Prerequisites
 
-- Node.js (v14 or higher)
-- npm or yarn
-- Claude API key
+- Node.js (v18 or higher)
+- Docker (for running ChromaDB)
+- OpenAI API key (for embeddings)
+- Claude API key (for the AI tutor)
 
 ### Installation
 
-1. Clone the repository
+1. Clone the repository:
 
-```bash
-git clone https://github.com/yourusername/supertutorai.git
-cd supertutorai
-```
-
-2. Install dependencies
-
-```bash
-npm install
-```
-
-3. Set up your environment variables
-
-Create a `.env` file in the root directory and add your Claude API key:
-
-```
-VITE_CLAUDE_API_KEY=your_claude_api_key_here
-```
-
-You can get a Claude API key by signing up at [Anthropic](https://www.anthropic.com/).
-
-4. Start the development server
-
-```bash
-npm run dev
-```
-
-5. Open your browser and navigate to `http://localhost:5173`
-
-## Security Note
-
-This application uses the `dangerouslyAllowBrowser: true` option to allow the Anthropic API to be called directly from the browser. This is done for demonstration purposes only and is not recommended for production applications.
-
-In a production environment, you should:
-
-- Create a backend API that handles the communication with Claude
-- Keep your API key secure on the server side
-- Never expose your API key in client-side code
-
-## Project Structure
-
-```
-supertutorai/
-├── public/
-├── src/
-│   ├── components/
-│   │   ├── Chat.tsx
-│   │   ├── ChatMessage.tsx
-│   │   ├── Header.tsx
-│   │   └── Sidebar.tsx
-│   ├── services/
-│   │   └── claudeService.ts
-│   ├── App.tsx
-│   ├── main.tsx
-│   └── index.css
-├── .env
-├── .env.example
-├── index.html
-├── package.json
-├── tsconfig.json
-├── tailwind.config.js
-└── README.md
-```
-
-## Deployment
-
-To build the application for production:
-
-```bash
-npm run build
-```
-
-This will create a `dist` folder with the compiled assets.
-
-## Environment Variables
-
-The application uses the following environment variables:
-
-- `VITE_CLAUDE_API_KEY`: Your Claude API key for AI responses
-
-### Environment Variables Security
-
-To securely manage environment variables:
-
-1. **Never commit real API keys to version control**
-
-   - The `.env` file is included in `.gitignore` to prevent accidental commits
-   - Use `.env.example` as a template with placeholder values
-
-2. **Setting up environment variables**
-
-   Run the setup script to create your `.env` file:
-
-   ```bash
-   npm run setup-env
+   ```
+   git clone https://github.com/yourusername/supertutorai.git
+   cd supertutorai
    ```
 
-   This script will:
+2. Install dependencies:
 
-   - Check if `.env` exists
-   - Create it from `.env.example` if needed
-   - Prompt you to enter your API key
-   - Verify that `.env` is in your `.gitignore`
+   ```
+   npm install
+   ```
 
-3. **Manual setup**
+3. Create a `.env` file based on the `.env.example`:
 
-   Alternatively, you can manually copy `.env.example` to `.env` and add your API key:
-
-   ```bash
+   ```
    cp .env.example .env
    ```
 
-   Then edit the `.env` file to add your actual API key.
-
-4. **Security best practices**
-
-   - Rotate your API keys regularly
-   - Use different API keys for development and production
-   - Consider using a secrets management service for production deployments
-
-5. **Before committing changes**
-
-   To ensure you don't accidentally commit your API key, run:
-
-   ```bash
-   npm run reset-env
+4. Edit the `.env` file and add your API keys:
+   ```
+   VITE_CLAUDE_API_KEY=your_claude_api_key_here
+   OPENAI_API_KEY=your_openai_api_key_here
+   CHROMA_DB_URL=http://localhost:8000
    ```
 
-   This will replace your actual API key with a placeholder in the `.env` file.
+### Running the Application
+
+1. Start the ChromaDB vector database using Docker:
+
+   ```
+   docker-compose up -d
+   ```
+
+2. Start the development server:
+
+   ```
+   npm run dev:all
+   ```
+
+3. Open your browser and navigate to `http://localhost:5173`
+
+## Vector Database
+
+SuperTutorAI uses ChromaDB as a vector database for storing and retrieving math problems and documents. This enables semantic search capabilities for finding similar problems or relevant documents.
+
+### API Endpoints
+
+The vector database API is available at `http://localhost:3002/api/vectordb` and provides the following endpoints:
+
+- `GET /status` - Check the status of the vector database
+- `POST /documents` - Add a document to the vector database
+- `POST /problems` - Add a problem to the vector database
+- `POST /query` - Query the vector database for similar documents
+- `GET /documents/:id` - Get a document by ID
+- `PUT /documents/:id` - Update a document
+- `DELETE /documents/:id` - Delete a document
+
+### Adding Documents
+
+To add a document to the vector database, use the AdminPage component, which provides a form for uploading documents and their metadata.
+
+### Querying Similar Documents
+
+You can query the vector database for similar documents using the `VectorStore` class:
+
+```typescript
+import { VectorStore } from "./services/vectordb/vectorStore";
+
+const vectorStore = new VectorStore();
+await vectorStore.initialize();
+
+// Find similar problems
+const similarProblems = await vectorStore.findSimilarProblems(
+  "What is the derivative of x^2?"
+);
+
+// Find similar documents
+const similarDocuments = await vectorStore.findSimilarDocuments(
+  "calculus integration"
+);
+```
 
 ## License
 
